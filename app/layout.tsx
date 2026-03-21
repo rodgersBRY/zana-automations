@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/motion/PageTransition";
+import CursorTrail from "@/components/motion/CursorTrail";
 import "./globals.css";
 
 const syne = Syne({
@@ -67,6 +68,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <Analytics />
+        <CursorTrail />
       </body>
     </html>
   );
