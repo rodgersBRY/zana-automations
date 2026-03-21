@@ -48,10 +48,13 @@ export default function Navbar() {
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
               >
-                <button className="flex items-center gap-1 font-body text-sm text-brand-subtle hover:text-brand-text transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded">
+                <Link
+                  href={link.href}
+                  className="flex items-center gap-1 font-body text-sm text-brand-subtle hover:text-brand-text transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded"
+                >
                   {link.label}
                   <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
-                </button>
+                </Link>
                 {servicesOpen && (
                   <div className="absolute top-full left-0 mt-2 w-60 bg-brand-surface border border-brand-border rounded-xl shadow-xl overflow-hidden">
                     {link.dropdown.map((item) => (
