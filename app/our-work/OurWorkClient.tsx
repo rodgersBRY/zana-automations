@@ -3,9 +3,11 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, TrendingDown, TrendingUp } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { fadeUp, staggerContainer, fadeIn, viewportConfig } from '@/lib/motion'
 import { DEMOS } from '@/lib/constants'
+import AnimatedHeading from '@/components/motion/AnimatedHeading'
+import DragScrubber from '@/components/motion/DragScrubber'
 
 export default function OurWorkClient() {
   const [activeDemo, setActiveDemo] = useState(0)
@@ -29,15 +31,19 @@ export default function OurWorkClient() {
           <motion.p variants={itemVariants} className="font-body text-xs font-medium text-brand-accent uppercase tracking-widest">
             Our work
           </motion.p>
-          <motion.h1 variants={itemVariants} className="font-display font-extrabold text-5xl sm:text-6xl text-brand-text tracking-tight max-w-3xl">
+          <AnimatedHeading
+            as="h1"
+            animate="onMount"
+            className="font-display font-extrabold text-5xl sm:text-6xl text-brand-text tracking-tight max-w-3xl"
+          >
             Automation case studies — Kenya
-          </motion.h1>
+          </AnimatedHeading>
           <motion.p variants={itemVariants} className="font-body text-lg text-brand-subtle leading-relaxed max-w-xl">
             Every demo below is a real system we built. Every number is real. No mockups, no hypotheticals.
           </motion.p>
         </motion.div>
 
-        {/* Tabs */}
+        {/* Demo tabs */}
         <motion.div
           variants={itemVariants}
           initial="hidden"
@@ -64,6 +70,7 @@ export default function OurWorkClient() {
           ))}
         </motion.div>
 
+        {/* Demo card with drag scrubber */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeDemo}
@@ -75,49 +82,19 @@ export default function OurWorkClient() {
             role="tabpanel"
             className="bg-brand-surface border border-brand-border rounded-2xl overflow-hidden"
           >
+            {/* Card header */}
             <div className="px-8 py-6 border-b border-brand-border">
               <h2 className="font-display font-bold text-2xl text-brand-text tracking-tight mb-2">{demo.name}</h2>
               <p className="font-body text-brand-subtle italic">{`"${demo.hook}"`}</p>
             </div>
 
-            <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-brand-border">
-              <div className="p-8">
-                <div className="flex items-center gap-2 mb-5">
-                  <TrendingDown className="w-4 h-4 text-red-400" aria-hidden="true" />
-                  <span className="font-body text-xs font-medium text-red-400 uppercase tracking-widest">Before</span>
-                </div>
-                <ul className="flex flex-col gap-3 mb-5" role="list">
-                  {demo.before.steps.map((step, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="font-body text-xs text-brand-muted mt-0.5 shrink-0">{i + 1}.</span>
-                      <span className="font-body text-sm text-brand-subtle leading-relaxed">{step}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="font-body text-xs text-red-400/80 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-2.5">
-                  {demo.before.pain}
-                </p>
-              </div>
+            {/* Drag scrubber */}
+            <DragScrubber
+              before={demo.before}
+              after={demo.after}
+            />
 
-              <div className="p-8">
-                <div className="flex items-center gap-2 mb-5">
-                  <TrendingUp className="w-4 h-4 text-brand-accent2" aria-hidden="true" />
-                  <span className="font-body text-xs font-medium text-brand-accent2 uppercase tracking-widest">After</span>
-                </div>
-                <ul className="flex flex-col gap-3 mb-5" role="list">
-                  {demo.after.steps.map((step, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="w-1.5 h-1.5 bg-brand-accent2 rounded-full mt-2 shrink-0" aria-hidden="true" />
-                      <span className="font-body text-sm text-brand-subtle leading-relaxed">{step}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="font-body text-xs text-brand-accent2 bg-brand-accent2/10 border border-brand-accent2/20 rounded-lg px-4 py-2.5">
-                  {demo.after.result}
-                </p>
-              </div>
-            </div>
-
+            {/* Stats */}
             <div className="px-8 py-5 bg-brand-bg border-t border-brand-border flex flex-wrap gap-3">
               {demo.stats.map((stat) => (
                 <span key={stat} className="font-body text-xs font-medium text-brand-text bg-brand-accent2/15 border border-brand-accent2/25 px-4 py-2 rounded-full">
@@ -137,9 +114,12 @@ export default function OurWorkClient() {
           className="mt-16 flex flex-col sm:flex-row gap-8 items-start sm:items-center justify-between bg-brand-surface border border-brand-border rounded-2xl p-8"
         >
           <div>
-            <h2 className="font-display font-bold text-xl text-brand-text tracking-tight mb-2">
+            <AnimatedHeading
+              as="h2"
+              className="font-display font-bold text-xl text-brand-text tracking-tight mb-2"
+            >
               Want to see a system like this for your business?
-            </h2>
+            </AnimatedHeading>
             <p className="font-body text-sm text-brand-subtle">
               Book a free 30-minute call. We&apos;ll walk through your manual processes and show you what
               automation would look like — with real numbers.

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { buildMetadata } from '@/lib/metadata'
 import { ArrowRight } from 'lucide-react'
 import { TOOLS } from '@/lib/constants'
+import AnimatedHeading from '@/components/motion/AnimatedHeading'
 
 export const metadata: Metadata = buildMetadata({
   title: 'About Zana Automations — Automation Consultant Nairobi',
@@ -24,20 +25,20 @@ const jsonLd = {
 
 const values = [
   {
-    title: 'We build, we don\'t just consult.',
-    body: 'We don\'t write 40-page strategy documents. We build working systems and hand them over. If it doesn\'t run, it doesn\'t count.',
+    title: "We build, we don't just consult.",
+    body: "We don't write 40-page strategy documents. We build working systems and hand them over. If it doesn't run, it doesn't count.",
   },
   {
     title: 'Real numbers only.',
-    body: 'We never say "save time" without a number attached. If we can\'t measure the improvement, we don\'t claim it.',
+    body: "We never say "save time" without a number attached. If we can't measure the improvement, we don't claim it.",
   },
   {
     title: 'Your stack, not ours.',
-    body: 'We build around the tools you already use. WhatsApp, M-Pesa, Google Sheets, your existing CRM — we meet you where you are.',
+    body: "We build around the tools you already use. WhatsApp, M-Pesa, Google Sheets, your existing CRM — we meet you where you are.",
   },
   {
     title: 'Transparent from day one.',
-    body: 'You get a fixed quote before we start, full documentation when we finish, and plain-language explanations throughout.',
+    body: "You get a fixed quote before we start, full documentation when we finish, and plain-language explanations throughout.",
   },
 ]
 
@@ -54,17 +55,23 @@ export default function AboutPage() {
           <p className="font-body text-xs font-medium text-brand-accent uppercase tracking-widest">
             About us
           </p>
-          <h1 className="font-display font-extrabold text-5xl sm:text-6xl text-brand-text tracking-tight max-w-3xl">
+          <AnimatedHeading
+            as="h1"
+            className="font-display font-extrabold text-5xl sm:text-6xl text-brand-text tracking-tight max-w-3xl"
+          >
             Automation consultant Nairobi — built for East African business
-          </h1>
+          </AnimatedHeading>
         </div>
 
         {/* Founder story + team */}
         <div className="grid md:grid-cols-2 gap-12 mb-20">
           <div>
-            <h2 className="font-display font-bold text-2xl text-brand-text tracking-tight mb-5">
+            <AnimatedHeading
+              as="h2"
+              className="font-display font-bold text-2xl text-brand-text tracking-tight mb-5"
+            >
               Why we built Zana
-            </h2>
+            </AnimatedHeading>
             <div className="flex flex-col gap-4 font-body text-brand-subtle leading-relaxed">
               <p>
                 We started Zana because we kept seeing the same thing: Kenyan businesses staffed by
@@ -79,7 +86,7 @@ export default function AboutPage() {
                 Western SaaS template with M-Pesa bolted on.
               </p>
               <p>
-                That's the gap we fill. We're based in Nairobi, we've worked inside Kenyan businesses,
+                That&apos;s the gap we fill. We&apos;re based in Nairobi, we&apos;ve worked inside Kenyan businesses,
                 and we build automation systems that fit the actual tools and workflows East African
                 companies use every day.
               </p>
@@ -88,9 +95,12 @@ export default function AboutPage() {
 
           {/* Team */}
           <div>
-            <h2 className="font-display font-bold text-2xl text-brand-text tracking-tight mb-5">
+            <AnimatedHeading
+              as="h2"
+              className="font-display font-bold text-2xl text-brand-text tracking-tight mb-5"
+            >
               The team
-            </h2>
+            </AnimatedHeading>
             <div className="flex flex-col gap-5">
               {[
                 {
@@ -101,7 +111,7 @@ export default function AboutPage() {
                 {
                   initials: 'PM',
                   name: 'Process & Implementation Specialist',
-                  bio: 'Maps the business logic. Makes sure every automation we build matches how clients actually work, not how we assume they work.',
+                  bio: "Maps the business logic. Makes sure every automation we build matches how clients actually work, not how we assume they work.",
                 },
               ].map((member) => (
                 <div key={member.initials} className="flex items-start gap-4 bg-brand-surface border border-brand-border rounded-2xl p-5">
@@ -120,9 +130,12 @@ export default function AboutPage() {
 
         {/* Values */}
         <div className="mb-20">
-          <h2 className="font-display font-bold text-3xl text-brand-text tracking-tight mb-10">
+          <AnimatedHeading
+            as="h2"
+            className="font-display font-bold text-3xl text-brand-text tracking-tight mb-10"
+          >
             How we work
-          </h2>
+          </AnimatedHeading>
           <div className="grid sm:grid-cols-2 gap-6">
             {values.map((value) => (
               <div key={value.title} className="bg-brand-surface border border-brand-border rounded-2xl p-7">
@@ -135,9 +148,12 @@ export default function AboutPage() {
 
         {/* Tech stack */}
         <div className="mb-20">
-          <h2 className="font-display font-bold text-2xl text-brand-text tracking-tight mb-6">
+          <AnimatedHeading
+            as="h2"
+            className="font-display font-bold text-2xl text-brand-text tracking-tight mb-6"
+          >
             Our tech stack
-          </h2>
+          </AnimatedHeading>
           <div className="flex flex-wrap gap-3">
             {TOOLS.map((tool) => (
               <span
@@ -157,9 +173,12 @@ export default function AboutPage() {
         {/* CTA */}
         <div className="bg-brand-surface border border-brand-border rounded-2xl p-10 flex flex-col sm:flex-row items-start sm:items-center gap-8 justify-between">
           <div>
-            <h2 className="font-display font-bold text-2xl text-brand-text tracking-tight mb-2">
-              Let's talk about your business.
-            </h2>
+            <AnimatedHeading
+              as="h2"
+              className="font-display font-bold text-2xl text-brand-text tracking-tight mb-2"
+            >
+              Let&apos;s talk about your business.
+            </AnimatedHeading>
             <p className="font-body text-brand-subtle">
               Book a free 30-minute call. No pitch, no pressure — just a practical conversation about what we can automate for you.
             </p>

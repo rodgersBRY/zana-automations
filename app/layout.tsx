@@ -3,6 +3,7 @@ import { Syne, DM_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageTransition from "@/components/motion/PageTransition";
 import "./globals.css";
 
 const syne = Syne({
@@ -61,7 +62,9 @@ export default function RootLayout({
       </head>
       <body className="bg-brand-bg text-brand-text antialiased">
         <Navbar />
-        <main>{children}</main>
+        <main>
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
         <Analytics />
       </body>
