@@ -22,34 +22,39 @@ const motionTags = {
 }
 
 function renderWords(children: React.ReactNode): React.ReactNode[] {
-  return React.Children.toArray(children).flatMap((child, childIdx) => {
+  const result: React.ReactNode[] = []
+  React.Children.forEach(children, (child, childIdx) => {
     if (typeof child === 'string') {
-      return child.split(/(\s+)/).filter(Boolean).map((segment, i) => {
-        if (/^\s+$/.test(segment)) return segment // preserve whitespace
-        return (
-          <motion.span
-            key={`${childIdx}-${i}`}
-            variants={wordReveal}
-            style={{ display: 'inline-block' }}
-          >
-            {segment}
-          </motion.span>
-        )
+      child.split(/(\s+)/).filter(Boolean).forEach((segment, i) => {
+        if (/^\s+$/.test(segment)) {
+          result.push(segment)
+        } else {
+          result.push(
+            <motion.span
+              key={`${childIdx}-${i}`}
+              variants={wordReveal}
+              style={{ display: 'inline-block' }}
+            >
+              {segment}
+            </motion.span>
+          )
+        }
       })
-    }
-    if (React.isValidElement(child)) {
-      return [
+    } else if (React.isValidElement(child)) {
+      result.push(
         <motion.span
           key={`el-${childIdx}`}
           variants={wordReveal}
           style={{ display: 'inline-block' }}
         >
           {child}
-        </motion.span>,
-      ]
+        </motion.span>
+      )
+    } else {
+      result.push(child)
     }
-    return [child]
   })
+  return result
 }
 
 export default function AnimatedHeading({

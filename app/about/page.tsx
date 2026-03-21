@@ -30,7 +30,7 @@ const values = [
   },
   {
     title: 'Real numbers only.',
-    body: "We never say "save time" without a number attached. If we can't measure the improvement, we don't claim it.",
+    body: "We never say \u201Csave time\u201D without a number attached. If we can\u2019t measure the improvement, we don\u2019t claim it.",
   },
   {
     title: 'Your stack, not ours.',
