@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zana Automations — Website
+
+Marketing website for **Zana Automations**, a Nairobi-based business process automation consultancy helping Kenyan SMBs, startups, and solopreneurs reclaim time by automating repetitive work.
+
+---
+
+## Tech Stack
+
+- **Framework:** Next.js 14 (App Router)
+- **Styling:** Tailwind CSS v3
+- **Animation:** Framer Motion
+- **Icons:** Lucide React
+- **Fonts:** Syne (display) + DM Sans (body) via `next/font`
+- **Forms:** React Hook Form + Resend
+- **Analytics:** Vercel Analytics
+- **Deployment:** Vercel
+
+---
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+app/                        # Next.js App Router pages
+├── layout.tsx              # Root layout: nav, footer, fonts, analytics
+├── page.tsx                # Homepage
+├── services/               # Services hub + 4 service detail pages
+├── our-work/               # Before/after demos + case studies
+├── how-it-works/           # 3-step process explainer
+├── pricing/                # Pricing tiers + FAQ
+├── about/                  # Founder story + team
+├── contact/                # Contact form + booking
+└── api/contact/route.ts    # Form submission handler (Resend)
 
-To learn more about Next.js, take a look at the following resources:
+components/
+├── ui/                     # Reusable primitives (Button, Card, Badge)
+├── layout/                 # Navbar, Footer, Container
+├── sections/               # Page-specific sections
+└── motion/                 # Shared Framer Motion variants
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+lib/
+├── metadata.ts             # Shared metadata helpers
+├── motion.ts               # Shared animation variants
+└── constants.ts            # Services data, pricing, nav links
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create a `.env.local` file in the project root:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+RESEND_API_KEY=your_resend_api_key_here
+```
+
+---
+
+## Deployment
+
+Deployed on [Vercel](https://vercel.com). Push to `main` triggers an automatic production deployment.
+
+Set `RESEND_API_KEY` in the Vercel project environment variables before going live.
+
+---
+
+## About Zana Automations
+
+**Zana** means *tools* or *instruments* in Swahili — fitting for a company that builds the systems so you can run the business.
+
+We help small & medium businesses across Kenya and East Africa automate manual, repetitive workflows using **n8n**, **Python**, **JavaScript**, and AI tools including the **OpenAI** and **Claude** APIs.
+
+**Based in Nairobi. Serving East Africa.**
