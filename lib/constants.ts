@@ -206,7 +206,7 @@ export const PRICING_TIERS = [
   {
     name: "Starter",
     tagline: "One problem. One system. Done.",
-    price: "KES 45,000–80,000",
+    price: "KES 20,000–70,000",
     priceNote: "One-off project",
     features: [
       "Single workflow or automation",
@@ -222,7 +222,7 @@ export const PRICING_TIERS = [
   {
     name: "Growth",
     tagline: "Multiple systems. Real operational change.",
-    price: "KES 120,000–250,000",
+    price: "KES 100,000–250,000",
     priceNote: "Project + optional retainer",
     features: [
       "Up to 4 interconnected automations",
@@ -239,7 +239,7 @@ export const PRICING_TIERS = [
   {
     name: "Scale",
     tagline: "Ongoing automation partner for your business.",
-    price: "KES 35,000+/mo",
+    price: "TBD/mo",
     priceNote: "Monthly retainer",
     features: [
       "Unlimited automation requests",
