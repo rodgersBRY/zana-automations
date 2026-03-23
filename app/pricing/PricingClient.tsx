@@ -7,6 +7,7 @@ import { PRICING_TIERS } from '@/lib/constants'
 import { pricingContainer, pricingCenter, pricingFlank, viewportConfig } from '@/lib/motion'
 import AnimatedHeading from '@/components/motion/AnimatedHeading'
 import TiltCard from '@/components/motion/TiltCard'
+import { track } from '@/lib/umami'
 
 const faqItems = [
   {
@@ -115,6 +116,7 @@ export default function PricingClient() {
                         ? 'bg-brand-accent hover:bg-brand-accent/90 text-white hover:scale-[1.02] active:scale-[0.98]'
                         : 'border border-brand-border hover:border-brand-accent/50 text-brand-text'
                     }`}
+                    onClick={() => track.pricingTierClick(tier.name)}
                   >
                     {tier.cta}
                     <ArrowRight className="w-4 h-4" />
@@ -165,6 +167,7 @@ export default function PricingClient() {
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 bg-brand-accent hover:bg-brand-accent/90 text-white font-body font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+            onClick={() => track.ctaClick('Get a quote', 'pricing-bottom')}
           >
             Get a quote
             <ArrowRight className="w-4 h-4" />

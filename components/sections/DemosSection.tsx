@@ -6,6 +6,7 @@ import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { ArrowRight, TrendingDown, TrendingUp } from "lucide-react";
 import { fadeUp, staggerContainer, fadeIn, viewportConfig } from "@/lib/motion";
 import { DEMOS } from "@/lib/constants";
+import { track } from "@/lib/umami";
 
 export default function DemosSection() {
   const [activeDemo, setActiveDemo] = useState(0);
@@ -69,7 +70,7 @@ export default function DemosSection() {
               role="tab"
               aria-selected={activeDemo === i}
               aria-controls={`demo-panel-${d.id}`}
-              onClick={() => setActiveDemo(i)}
+              onClick={() => { setActiveDemo(i); track.demoTabChange(d.name) }}
               className={`font-body text-sm font-medium px-5 py-2.5 rounded-xl border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent ${
                 activeDemo === i
                   ? "bg-brand-accent text-white border-brand-accent"
@@ -186,6 +187,7 @@ export default function DemosSection() {
           <Link
             href="/our-work"
             className="inline-flex items-center gap-2 bg-brand-accent hover:bg-brand-accent/90 text-white font-body font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent shrink-0"
+            onClick={() => track.ctaClick('See all demos', 'demos-section')}
           >
             See all demos
             <ArrowRight className="w-4 h-4" />

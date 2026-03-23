@@ -13,6 +13,7 @@ import { ArrowRight, Play } from "lucide-react";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import AnimatedHeading from "@/components/motion/AnimatedHeading";
 import CountUp from "@/components/motion/CountUp";
+import { track } from "@/lib/umami";
 
 const stats = [
   { num: 10, suffix: " min", label: "avg approval time" },
@@ -197,6 +198,7 @@ export default function HeroSection() {
             <Link
               href="/contact"
               className="inline-flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accent/90 text-white font-body font-medium px-7 py-4 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+              onClick={() => track.ctaClick('Book a free call', 'hero')}
             >
               Book a free call
               <ArrowRight className="w-4 h-4" />
@@ -204,6 +206,7 @@ export default function HeroSection() {
             <Link
               href="/our-work"
               className="inline-flex items-center justify-center gap-2 border border-brand-border hover:border-brand-accent/50 text-brand-text font-body font-medium px-7 py-4 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+              onClick={() => track.ctaClick('See our demos', 'hero')}
             >
               <Play className="w-4 h-4" />
               See our demos

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { track } from '@/lib/umami'
 
 type FormData = {
   name: string
@@ -34,6 +35,14 @@ export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState('')
   const prefersReducedMotion = useReducedMotion()
+  const formStarted = useRef(false)
+
+  function handleFieldFocus() {
+    if (!formStarted.current) {
+      formStarted.current = true
+      track.formStart()
+    }
+  }
 
   const {
     register,
@@ -43,6 +52,7 @@ export default function ContactForm() {
 
   const onSubmit = async (data: FormData) => {
     setServerError('')
+    track.formSubmit()
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -51,12 +61,16 @@ export default function ContactForm() {
       })
       if (!res.ok) {
         const json = await res.json()
-        setServerError(json.error || 'Something went wrong. Please try again.')
+        const errorMsg = json.error || 'Something went wrong. Please try again.'
+        setServerError(errorMsg)
+        track.formError('server_error')
         return
       }
+      track.formSuccess()
       setSubmitted(true)
     } catch {
       setServerError('Network error. Please check your connection and try again.')
+      track.formError('network_error')
     }
   }
 
@@ -117,6 +131,7 @@ export default function ContactForm() {
               }`}
               aria-invalid={errors.name ? 'true' : 'false'}
               aria-describedby={errors.name ? 'name-error' : undefined}
+              onFocus={handleFieldFocus}
               {...register('name', { required: 'Please enter your name.' })}
             />
             {errors.name && (

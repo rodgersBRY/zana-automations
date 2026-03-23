@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Syne, DM_Sans } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -69,6 +70,15 @@ export default function RootLayout({
         <Footer />
         <Analytics />
         <CursorTrail />
+        {process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL &&
+          process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+            <Script
+              async
+              src={process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL}
+              data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+              strategy="afterInteractive"
+            />
+          )}
       </body>
     </html>
   );

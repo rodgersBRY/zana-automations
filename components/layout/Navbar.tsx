@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown, Zap } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
+import { track } from "@/lib/umami";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -45,7 +46,7 @@ export default function Navbar() {
               <div
                 key={link.label}
                 className="relative group"
-                onMouseEnter={() => setServicesOpen(true)}
+                onMouseEnter={() => { setServicesOpen(true); track.navServicesOpen() }}
                 onMouseLeave={() => setServicesOpen(false)}
               >
                 <Link
@@ -86,12 +87,13 @@ export default function Navbar() {
           <Link
             href="/contact"
             className="hidden md:inline-flex items-center gap-2 bg-brand-accent hover:bg-brand-accent/90 text-white font-body font-medium text-sm px-5 py-2.5 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            onClick={() => track.ctaClick('Book a free call', 'navbar-desktop')}
           >
             Book a free call
           </Link>
           <button
             className="md:hidden text-brand-subtle hover:text-brand-text transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            onClick={() => { const opening = !mobileOpen; setMobileOpen(opening); if (opening) track.navMobileOpen() }}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
             {mobileOpen ? (
@@ -138,7 +140,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               className="mt-6 w-full text-center bg-brand-accent text-white font-body font-medium text-sm px-5 py-3 rounded-xl"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => { setMobileOpen(false); track.ctaClick('Book a free call', 'navbar-mobile') }}
             >
               Book a free call
             </Link>

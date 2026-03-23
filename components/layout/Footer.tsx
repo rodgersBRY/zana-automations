@@ -58,6 +58,8 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="Zana Automations on LinkedIn"
               className="w-9 h-9 flex items-center justify-center rounded-lg border border-brand-border text-brand-subtle hover:text-brand-text hover:border-brand-accent/50 transition-all duration-200"
+              data-umami-event="social_link_click"
+              data-umami-event-platform="linkedin"
             >
               <Linkedin className="w-4 h-4" />
             </a>
@@ -67,6 +69,8 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="Chat with us on WhatsApp"
               className="w-9 h-9 flex items-center justify-center rounded-lg border border-brand-border text-brand-subtle hover:text-brand-text hover:border-brand-accent2/50 transition-all duration-200"
+              data-umami-event="social_link_click"
+              data-umami-event-platform="whatsapp"
             >
               <MessageCircle className="w-4 h-4" />
             </a>
