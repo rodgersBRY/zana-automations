@@ -53,12 +53,14 @@ export default function ContactForm() {
   const onSubmit = async (data: FormData) => {
     setServerError('')
     track.formSubmit()
+
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
+      
       if (!res.ok) {
         const json = await res.json()
         const errorMsg = json.error || 'Something went wrong. Please try again.'
@@ -66,6 +68,7 @@ export default function ContactForm() {
         track.formError('server_error')
         return
       }
+
       track.formSuccess()
       setSubmitted(true)
     } catch {
@@ -105,7 +108,7 @@ export default function ContactForm() {
           </div>
           <h2 className="font-display font-bold text-2xl text-brand-text tracking-tight">Message sent</h2>
           <p className="font-body text-brand-subtle leading-relaxed max-w-sm">
-            We'll get back to you within 24 hours — usually much sooner. Keep an eye on your inbox.
+            We&apos;ll get back to you within 24 hours — usually much sooner. Keep an eye on your inbox.
           </p>
         </motion.div>
       ) : (

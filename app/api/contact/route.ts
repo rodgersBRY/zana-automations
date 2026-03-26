@@ -4,6 +4,7 @@ import { Resend } from "resend";
 export async function POST(request: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
+
     const body = await request.json();
     const { name, business, email, message } = body;
 
@@ -23,8 +24,8 @@ export async function POST(request: NextRequest) {
     }
 
     await resend.emails.send({
-      from: "Zana Automations <hello@zanaautomations.co.ke>",
-      to: ["hello@zanaautomations.co.ke"],
+      from: "Zana Automations <info@zanaautomations.co.ke>",
+      to: ["brianmawira2@gmail.com"],
       replyTo: email,
       subject: `New enquiry from ${name}${business ? ` — ${business}` : ""}`,
       text: `
