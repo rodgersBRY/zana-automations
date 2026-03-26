@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
 
 const COLORS = [
@@ -12,79 +12,112 @@ const COLORS = [
   '#5DCAA5', // soft teal
 ]
 
-interface TrailDot {
-  id: number
+interface Particle {
   x: number
   y: number
+  alpha: number
+  radius: number
   color: string
 }
 
-let _dotId = 0
+function hexToRgb(hex: string): [number, number, number] {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return [r, g, b]
+}
 
 export default function CursorTrail() {
   const prefersReducedMotion = useReducedMotion()
-
-  // Touch detection — runs only on the client
   const [isTouch, setIsTouch] = useState(false)
-  useEffect(() => {
-    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
-  }, [])
 
-  const [ballColor, setBallColor] = useState(COLORS[0])
-  const [cursorVisible, setCursorVisible] = useState(false)
-  const [trailDots, setTrailDots] = useState<TrailDot[]>([])
-
-  // Keep a ref to the current color so mousemove can read it without stale closure
-  const ballColorRef = useRef(COLORS[0])
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const particlesRef = useRef<Particle[]>([])
+  const colorRef = useRef(COLORS[0])
+  const rafRef = useRef<number>()
   const lastDotTimeRef = useRef(0)
   const colorTimerRef = useRef<ReturnType<typeof setTimeout>>()
 
-  // Spring-lagged ball position
+  // Spring ball — motion values don't trigger React re-renders
   const mouseX = useMotionValue(-200)
   const mouseY = useMotionValue(-200)
   const ballX = useSpring(mouseX, { stiffness: 150, damping: 18, mass: 0.6 })
   const ballY = useSpring(mouseY, { stiffness: 150, damping: 18, mass: 0.6 })
+  const [ballColor, setBallColor] = useState(COLORS[0])
+  const [cursorVisible, setCursorVisible] = useState(false)
 
-  // Randomised color cycler
+  useEffect(() => {
+    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
+  }, [])
+
   useEffect(() => {
     if (prefersReducedMotion || isTouch) return
 
-    const scheduleNext = (): ReturnType<typeof setTimeout> => {
-      const delay = 2000 + Math.random() * 1500 // 2000–3500 ms
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize, { passive: true })
+
+    // Color cycler — only updates ball color state (every 2–3.5s, negligible)
+    const scheduleColor = (): ReturnType<typeof setTimeout> => {
+      const delay = 2000 + Math.random() * 1500
       return setTimeout(() => {
-        const others = COLORS.filter((c) => c !== ballColorRef.current)
+        const others = COLORS.filter((c) => c !== colorRef.current)
         const next = others[Math.floor(Math.random() * others.length)]
-        ballColorRef.current = next
+        colorRef.current = next
         setBallColor(next)
-        colorTimerRef.current = scheduleNext()
+        colorTimerRef.current = scheduleColor()
       }, delay)
     }
+    colorTimerRef.current = scheduleColor()
 
-    colorTimerRef.current = scheduleNext()
-    return () => clearTimeout(colorTimerRef.current)
-  }, [prefersReducedMotion, isTouch])
+    // RAF draw loop — no React state, no re-renders
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-  // Mouse tracking + trail dot creation
-  useEffect(() => {
-    if (prefersReducedMotion || isTouch) return
+      particlesRef.current = particlesRef.current.filter((p) => p.alpha > 0.015)
 
+      for (const p of particlesRef.current) {
+        p.alpha *= 0.87
+        p.radius *= 0.91
+
+        const [r, g, b] = hexToRgb(p.color)
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius)
+        gradient.addColorStop(0, `rgba(${r},${g},${b},${p.alpha})`)
+        gradient.addColorStop(1, `rgba(${r},${g},${b},0)`)
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
+        ctx.fillStyle = gradient
+        ctx.fill()
+      }
+
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+
+    // Mouse tracking — only pushes to ref array, no setState
     const handleMove = (e: MouseEvent) => {
       mouseX.set(e.clientX)
       mouseY.set(e.clientY)
 
-      // Throttle trail to ~40 fps so the array stays small
       const now = Date.now()
-      if (now - lastDotTimeRef.current < 25) return
+      if (now - lastDotTimeRef.current < 30) return
       lastDotTimeRef.current = now
 
-      const id = _dotId++
-      const color = ballColorRef.current
-      setTrailDots((prev) => [...prev, { id, x: e.clientX, y: e.clientY, color }])
-
-      // Remove the dot after its animation finishes
-      setTimeout(() => {
-        setTrailDots((prev) => prev.filter((d) => d.id !== id))
-      }, 650)
+      particlesRef.current.push({
+        x: e.clientX,
+        y: e.clientY,
+        alpha: 0.55,
+        radius: 8,
+        color: colorRef.current,
+      })
     }
 
     const handleEnter = () => setCursorVisible(true)
@@ -95,9 +128,12 @@ export default function CursorTrail() {
     document.addEventListener('mouseleave', handleLeave)
 
     return () => {
+      window.removeEventListener('resize', resize)
       document.removeEventListener('mousemove', handleMove)
       document.removeEventListener('mouseenter', handleEnter)
       document.removeEventListener('mouseleave', handleLeave)
+      clearTimeout(colorTimerRef.current)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [prefersReducedMotion, isTouch, mouseX, mouseY])
 
@@ -105,30 +141,19 @@ export default function CursorTrail() {
 
   return (
     <>
-      {/* Trail dots — each inherits the ball color at creation time */}
-      {trailDots.map((dot) => (
-        <motion.div
-          key={dot.id}
-          aria-hidden="true"
-          initial={{ opacity: 0.55, scale: 1 }}
-          animate={{ opacity: 0, scale: 0.15 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{
-            position: 'fixed',
-            left: dot.x - 5,
-            top: dot.y - 5,
-            width: 10,
-            height: 10,
-            borderRadius: '50%',
-            backgroundColor: dot.color,
-            filter: 'blur(3px)',
-            pointerEvents: 'none',
-            zIndex: 9998,
-          }}
-        />
-      ))}
+      {/* Canvas trail — drawn entirely off React's render cycle */}
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 9998,
+        }}
+      />
 
-      {/* Main glowing ball */}
+      {/* Spring ball — motion values bypass React state */}
       <motion.div
         aria-hidden="true"
         animate={{
