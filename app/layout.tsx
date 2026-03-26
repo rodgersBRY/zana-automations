@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/motion/PageTransition";
 import CursorTrail from "@/components/motion/CursorTrail";
+import MotionProvider from "@/components/motion/MotionProvider";
 import "./globals.css";
 
 const syne = Syne({
@@ -63,13 +64,15 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-brand-bg text-brand-text antialiased">
-        <Navbar />
-        <main>
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
-        <Analytics />
-        <CursorTrail />
+        <MotionProvider>
+          <Navbar />
+          <main>
+            <PageTransition>{children}</PageTransition>
+          </main>
+          <Footer />
+          <Analytics />
+          <CursorTrail />
+        </MotionProvider>
         {process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL &&
           process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
             <Script
