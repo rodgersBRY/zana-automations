@@ -17,7 +17,7 @@ const config: Config = {
           accent2: '#00E5A0',
           muted:   '#3A3A4A',
           text:    '#E8E8F0',
-          subtle:  '#8888A0',
+          subtle:  '#9696B0',
         },
       },
     },

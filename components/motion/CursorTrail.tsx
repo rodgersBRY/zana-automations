@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-moti
 const COLORS = [
   '#6C63FF', // brand-accent purple
   '#00E5A0', // brand-accent2 green
-  '#8888A0', // brand-subtle
+  '#9696B0', // brand-subtle
   '#3A3A4A', // brand-muted
   '#AFA9EC', // soft purple
   '#5DCAA5', // soft teal
