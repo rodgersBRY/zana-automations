@@ -106,7 +106,7 @@ export default function ServicesSection() {
                     href={`/services/${service.slug}`}
                     className="inline-flex items-center gap-1.5 font-body text-sm text-brand-accent hover:text-brand-accent/80 transition-colors duration-200 group-hover:gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded"
                   >
-                    Learn more
+                    Learn more about {service.name}
                     <ArrowRight className="w-3.5 h-3.5 transition-all duration-200" />
                   </Link>
                 </motion.div>

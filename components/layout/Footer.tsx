@@ -62,6 +62,7 @@ export default function Footer() {
               data-umami-event-platform="linkedin"
             >
               <Linkedin className="w-4 h-4" />
+              <span className="sr-only">Zana Automations on LinkedIn</span>
             </a>
             <a
               href="https://wa.me/254700000000"
@@ -73,6 +74,7 @@ export default function Footer() {
               data-umami-event-platform="whatsapp"
             >
               <MessageCircle className="w-4 h-4" />
+              <span className="sr-only">Chat with us on WhatsApp</span>
             </a>
           </div>
         </div>

@@ -92,7 +92,7 @@ export default function ServicesPageClient() {
                     href={`/services/${service.slug}`}
                     className="inline-flex items-center gap-2 bg-brand-accent hover:bg-brand-accent/90 text-white font-body font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
                   >
-                    Learn more
+                    Learn more about {service.name}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
