@@ -1,14 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useEffect } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useMotionValue,
-  useSpring,
-  useAnimate,
-} from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import AnimatedHeading from "@/components/motion/AnimatedHeading";
@@ -30,125 +23,42 @@ const toolLogos = [
   "Airtable",
 ];
 
-function AnimatedOrb({
-  color,
-  size,
-  top,
-  left,
-  driftDuration,
-  driftDelay,
-  opacity,
-}: {
-  color: string
-  size: number
-  top: string
-  left: string
-  driftDuration: number
-  driftDelay: number
-  opacity: number
-}) {
-  const [scope, animate] = useAnimate();
-  const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    animate(
-      scope.current,
-      { x: [0, 20, -15, 25, -20, 0], y: [0, -25, 15, -10, 20, 0] },
-      {
-        duration: driftDuration,
-        delay: driftDelay,
-        repeat: Infinity,
-        repeatType: "mirror",
-        ease: "easeInOut",
-      }
-    );
-  }, [prefersReducedMotion]);
-
-  return (
-    <div
-      ref={scope}
-      aria-hidden="true"
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: size,
-        height: size,
-        top,
-        left,
-        background: color,
-        filter: "blur(120px)",
-        opacity,
-      }}
-    />
-  );
-}
-
 export default function HeroSection() {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? {} : fadeUp;
   const containerVariants = prefersReducedMotion ? {} : staggerContainer;
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const el = sectionRef.current;
-    if (!el) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      mouseX.set(((e.clientX - cx) / rect.width) * 20);
-      mouseY.set(((e.clientY - cy) / rect.height) * 20);
-    };
-    el.addEventListener("mousemove", handleMouseMove);
-    return () => el.removeEventListener("mousemove", handleMouseMove);
-  }, [prefersReducedMotion, mouseX, mouseY]);
-
   return (
     <section
-      ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center pt-16 overflow-hidden hero-glow"
       aria-labelledby="hero-heading"
     >
-      {/* Background gradient orbs */}
+      {/* Background gradient orbs — CSS animations run on compositor thread */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <motion.div
-          style={{ x: springX, y: springY }}
-          className="absolute inset-0"
-        >
-          <AnimatedOrb
-            color="#6C63FF"
-            size={384}
-            top="25%"
-            left="25%"
-            driftDuration={8}
-            driftDelay={0}
-            opacity={0.15}
-          />
-          <AnimatedOrb
-            color="#00E5A0"
-            size={320}
-            top="55%"
-            left="65%"
-            driftDuration={10}
-            driftDelay={2}
-            opacity={0.12}
-          />
-          <AnimatedOrb
-            color="#3A3A4A"
-            size={480}
-            top="40%"
-            left="45%"
-            driftDuration={6}
-            driftDelay={4}
-            opacity={0.18}
-          />
-        </motion.div>
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 384, height: 384, top: "25%", left: "25%",
+            background: "#6C63FF", filter: "blur(120px)", opacity: 0.15,
+            animation: "orb-drift-1 8s ease-in-out infinite",
+          }}
+        />
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 320, height: 320, top: "55%", left: "65%",
+            background: "#00E5A0", filter: "blur(120px)", opacity: 0.12,
+            animation: "orb-drift-2 10s ease-in-out 2s infinite",
+          }}
+        />
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 480, height: 480, top: "40%", left: "45%",
+            background: "#3A3A4A", filter: "blur(120px)", opacity: 0.18,
+            animation: "orb-drift-3 6s ease-in-out 4s infinite",
+          }}
+        />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-6 py-24 flex flex-col items-center text-center">
