@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { render } from "@react-email/components";
+import ContactEnquiry from "@/emails/ContactEnquiry";
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,19 +25,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const html = await render(
+      ContactEnquiry({ name, business, email, message }),
+    );
+
     await resend.emails.send({
       from: "Zana Automations <info@zanaautomations.co.ke>",
       to: ["brianmawira2@gmail.com"],
       replyTo: email,
       subject: `New enquiry from ${name}${business ? ` — ${business}` : ""}`,
-      text: `
-Name: ${name}
-Business: ${business || "Not provided"}
-Email: ${email}
-
-Message:
-${message}
-      `.trim(),
+      html,
+      text: `Name: ${name}\nBusiness: ${business || "Not provided"}\nEmail: ${email}\n\nMessage:\n${message}`,
     });
 
     return NextResponse.json({ success: true });
